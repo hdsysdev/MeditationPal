@@ -1,5 +1,6 @@
 package com.hddev.meditationpal.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -37,7 +40,9 @@ import androidx.navigation.NavController
 @Composable
 fun HomeScreen(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val minutes = remember { mutableIntStateOf(5) }
@@ -50,15 +55,21 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier.size(200.dp)
         ) {
             CircularProgressIndicator(
-                progress = minutes.value / 10f,
+
+                progress = { minutes.intValue / 10f },
                 modifier = Modifier.fillMaxSize(),
-                color = Color.Blue,
-                strokeWidth = 16.dp
+                color = MaterialTheme.colorScheme.primary,
+                strokeWidth = 16.dp,
+                strokeCap = StrokeCap.Round,
+                trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+//
+//                startAngle = 135f,
+//                endAngle = 135f + (minutes.value / 10f) * 270f
             )
             Text(
                 text = "${minutes.value} min",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -95,7 +106,9 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun OptionCard(icon: ImageVector, title: String, onClick: () -> Unit) {
     Card(
-        elevation = CardDefaults.outlinedCardElevation(),
+        elevation = CardDefaults.elevatedCardElevation(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.elevatedCardColors(),
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
@@ -107,14 +120,14 @@ fun OptionCard(icon: ImageVector, title: String, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = Color.Blue,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
