@@ -1,5 +1,6 @@
 package com.hddev.meditationpal.screens
 
+import com.hddev.meditationpal.components.OptionCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,10 +37,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.hddev.meditationpal.components.OptionCard
+import com.hddev.meditationpal.components.PartialCircularProgressIndicator
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun MeditationScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,51 +56,23 @@ fun HomeScreen(navController: NavController) {
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(200.dp)
         ) {
-            CircularProgressIndicator(
+            PartialCircularProgressIndicator(
 
-                progress = { minutes.intValue / 10f },
+                progress = minutes.intValue / 10f,
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.primary,
                 strokeWidth = 16.dp,
-                strokeCap = StrokeCap.Round,
                 trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
 //
 //                startAngle = 135f,
 //                endAngle = 135f + (minutes.value / 10f) * 270f
             )
             Text(
-                text = "${minutes.value} min",
+                text = "${minutes.intValue} min",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // List of cards with options
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                OptionCard(
-                    icon = Icons.Default.PlayArrow,
-                    title = "Start Meditation",
-                    onClick = {
-                        navController.navigate("meditation")
-                    }
-                )
-            }
-            item {
-                OptionCard(
-                    icon = Icons.Default.Settings,
-                    title = "Set Goal",
-                    onClick = {
-                        navController.navigate("goal")
-                    }
-                )
-            }
-        }
     }
 }
+

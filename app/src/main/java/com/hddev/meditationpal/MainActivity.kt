@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hddev.meditationpal.screens.HomeScreen
+import com.hddev.meditationpal.screens.MeditationScreen
 import com.hddev.meditationpal.ui.theme.MeditationPalTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,6 +37,7 @@ fun RootNavController(){
 
     NavHost(navController = navController , startDestination = "home") {
         composable("home") { HomeScreen(navController = navController) }
+        composable("meditation") { MeditationScreen(navController = navController) }
     }
 
 }
