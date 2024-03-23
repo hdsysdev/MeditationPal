@@ -88,7 +88,7 @@ fun HomeScreen(navController: NavController) {
                     icon = Icons.Default.PlayArrow,
                     title = "Start Meditation",
                     onClick = {
-                        navController.navigate("meditation")
+                        navController.navigate("start_session")
                     }
                 )
             }
