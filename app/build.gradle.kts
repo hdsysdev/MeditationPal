@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("io.objectbox")
 }
 
 android {
@@ -58,6 +59,16 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose.v277)
 
+//    implementation("com.chargemap.compose:numberpicker:latestVersion")
+
+    implementation("io.objectbox:objectbox-kotlin:3.8.0")
+    
+
+    val composeBom = platform("androidx.compose:compose-bom:2024.03.00")
+    implementation(composeBom)
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.ui:ui-tooling-preview")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
