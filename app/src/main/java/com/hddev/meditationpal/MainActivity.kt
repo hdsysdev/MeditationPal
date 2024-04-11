@@ -38,7 +38,7 @@ fun RootNavController(){
 
     NavHost(navController = navController , startDestination = "home") {
         composable("home") { HomeScreen(navController = navController) }
-        composable("start_session") { SessionStartScreen(navController = navController) }
+        composable("start_session") { SessionStartScreen() }
         composable("meditation") { MeditationScreen(navController = navController) }
     }
 

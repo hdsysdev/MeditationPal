@@ -27,44 +27,58 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hddev.meditationpal.components.CustomTimeSelector
 import com.hddev.meditationpal.components.PartialCircularProgressIndicator
 import com.hddev.meditationpal.components.Picker
+import com.hddev.meditationpal.components.SelectedTime
 
+@Preview
 @Composable
-fun SessionStartScreen(navController: NavController) {
+fun SessionStartScreen() {
+    var selectedTime by remember { mutableStateOf(SelectedTime(0, 0, 0)) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val minutes = remember { mutableIntStateOf(5) }
-
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Circular progress bar with minutes in the center
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.size(200.dp)
+            modifier = Modifier.size(350.dp, 250.dp).align(Alignment.CenterHorizontally)
         ) {
-            CustomTimeSelector()
-            Text(
-                text = "${minutes.intValue} min",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
+            CustomTimeSelector(
+                selectedTime = selectedTime,
+                onTimeSelected = { newTime ->
+                    selectedTime = newTime
+                }
             )
         }
+        Text(
+            text = "${selectedTime.hours} hr ${selectedTime.minutes} min ${selectedTime.seconds} sec",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
+}
+
+private fun saveTimeToDatabase(selectedTime: SelectedTime) {
+    // Save the selectedTime to the database
+    // Implement your database saving logic here
 }
 

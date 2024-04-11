@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
@@ -35,8 +36,9 @@ import kotlinx.coroutines.flow.map
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Picker(
+    value: Int,
+    onValueChange: (Int) -> Unit,
     items: List<String>,
-    state: PickerState = rememberPickerState(),
     modifier: Modifier = Modifier,
     startIndex: Int = 0,
     visibleItemsCount: Int = 3,
@@ -44,7 +46,6 @@ fun Picker(
     textStyle: TextStyle = LocalTextStyle.current,
     dividerColor: Color = LocalContentColor.current,
 ) {
-
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = Integer.MAX_VALUE
     val listScrollMiddle = listScrollCount / 2
@@ -68,13 +69,12 @@ fun Picker(
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
-            .map { index -> getItem(index + visibleItemsMiddle) }
+            .map { index -> index + visibleItemsMiddle }
             .distinctUntilChanged()
-            .collect { item -> state.selectedItem = item }
+            .collect { index -> onValueChange(index % items.size) }
     }
 
     Box(modifier = modifier) {
-
         LazyColumn(
             state = listState,
             flingBehavior = flingBehavior,
@@ -93,6 +93,7 @@ fun Picker(
                     modifier = Modifier
                         .onSizeChanged { size -> itemHeightPixels.value = size.height }
                         .then(textModifier)
+                        .alpha(if (index % items.size == value) 1f else 0.5f)
                 )
             }
         }
@@ -106,9 +107,7 @@ fun Picker(
             color = dividerColor,
             modifier = Modifier.offset(y = itemHeightDp * (visibleItemsMiddle + 1))
         )
-
     }
-
 }
 
 private fun Modifier.fadingEdge(brush: Brush) = this
